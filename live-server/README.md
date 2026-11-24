@@ -58,3 +58,11 @@ npx wrangler dev --port 8799
 node test/smoke.mjs     # server checks
 node test/panel.mjs     # panel checks
 ```
+
+## Check the live server
+
+After Cloudflare finishes, run this read-only check (it posts nothing):
+
+```
+node live-server/test/live-check.mjs https://vicewire.<your-subdomain>.workers.dev
+```
