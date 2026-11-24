@@ -10,7 +10,7 @@
 
 import { DurableObject } from "cloudflare:workers";
 import { MOD_PAGE } from "./mod-page.js";
-import { handleBoard } from "./board.js";
+import { handleBoard, modTips, modTipAction } from "./board.js";
 
 export const PLATFORMS = ["PS5", "Xbox Series X|S"];
 export const CHAPTERS = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "After the story"];
@@ -474,7 +474,12 @@ export class Hub extends DurableObject {
           replies: replies.filter((r) => r.post_id === p.id).map((r) => ({ ...r, reports: rc[`r:${p.id}:${r.id}`] || 0 })),
         })),
         voice: { on: this.voiceOn(), joinsToday: this.joinsToday(), cap: parseInt(this.env.VOICE_DAILY_JOINS || "500", 10) },
+        board: await modTips(this.env),
       });
+    }
+    if (request.method === "POST" && b && b.kind === "tip") {
+      await modTipAction(this.env, b.action, Number(b.id));
+      return json({ ok: true });
     }
     if (request.method === "POST" && b) {
       const id = typeof b.id === "string" ? b.id : "";

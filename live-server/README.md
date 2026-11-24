@@ -5,7 +5,7 @@ One Cloudflare Worker serves all three:
 
 - `/board/tips` tip board, stored in the D1 database `lfr-board` (tables are made on first use)
 - `/api/...` LFG board and voice rooms
-- `/mod` moderation page (needs the `MOD_KEY` secret)
+- `/mod` moderation page for tips, crew posts and replies (needs the `MOD_KEY` secret)
 
 ## Cloudflare setup
 

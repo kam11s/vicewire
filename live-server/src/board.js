@@ -46,7 +46,7 @@ async function ipHash(req, env) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip + "|" + (await salt(env))));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
 }
-const clean = (s, max) => String(s ?? "").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, max);
+const clean = (s, max) => String(s ?? "").replace(/<[^>]*>/g, "").replace(/[<>]/g, "").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, max);
 const ago = ms => new Date(Date.now() - ms).toISOString();
 
 async function turnstileOk(req, env, token) {
@@ -146,4 +146,27 @@ export async function boardCleanup(env) {
   if (!env.DB) return;
   await ensureSchema(env);
   await forgetOldHashes(env);
+}
+
+// Moderation, used by the /mod page through the Hub (same MOD_KEY check and lockout).
+export async function modTips(env) {
+  if (!env.DB) return { on: false, tips: [] };
+  await ensureSchema(env);
+  const { results } = await env.DB.prepare(
+    "SELECT id, chapter, name, body, reports, hidden, created_at FROM tips ORDER BY (hidden = 1 OR reports > 0) DESC, id DESC LIMIT 60"
+  ).all();
+  return { on: true, tips: results || [] };
+}
+export async function modTipAction(env, action, id) {
+  if (!env.DB || !(id > 0)) return;
+  await ensureSchema(env);
+  if (action === "delete") {
+    await env.DB.prepare("DELETE FROM reports WHERE tip_id = ?").bind(id).run();
+    await env.DB.prepare("DELETE FROM tips WHERE id = ?").bind(id).run();
+  } else if (action === "hide") {
+    await env.DB.prepare("UPDATE tips SET hidden = 1 WHERE id = ?").bind(id).run();
+  } else if (action === "show") {
+    await env.DB.prepare("DELETE FROM reports WHERE tip_id = ?").bind(id).run();
+    await env.DB.prepare("UPDATE tips SET hidden = 0, reports = 0 WHERE id = ?").bind(id).run();
+  }
 }
