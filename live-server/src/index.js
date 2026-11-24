@@ -10,6 +10,7 @@
 
 import { DurableObject } from "cloudflare:workers";
 import { MOD_PAGE } from "./mod-page.js";
+import { handleBoard } from "./board.js";
 
 export const PLATFORMS = ["PS5", "Xbox Series X|S"];
 export const CHAPTERS = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "After the story"];
@@ -123,6 +124,9 @@ export default {
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");
     const allowed = origin && originsOf(env).includes(origin) ? origin : null;
+
+    // Tip board (D1). It handles its own CORS.
+    if (url.pathname.startsWith("/board/")) return handleBoard(request, env);
 
     if (url.pathname === "/mod") {
       return new Response(MOD_PAGE, {

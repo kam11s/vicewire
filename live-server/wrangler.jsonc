@@ -1,8 +1,9 @@
 {
-  // Vicewire live server: LFG board + voice room signaling.
+  // Vicewire live server: tip board, LFG board and voice room signaling.
+  // For local testing. Cloudflare builds from the wrangler.jsonc at the top of this branch.
   // Runs on the Cloudflare Workers free plan (SQLite Durable Object).
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vicewire-live",
+  "name": "vicewire",
   "main": "src/index.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
@@ -10,6 +11,10 @@
     "bindings": [{ "name": "HUB", "class_name": "Hub" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Hub"] }],
+  // Tip board database (already made in the Cloudflare account).
+  "d1_databases": [
+    { "binding": "DB", "database_name": "lfr-board", "database_id": "869965d4-4474-4629-b406-aaee42b5504b" }
+  ],
   "vars": {
     // Pages allowed to use the board. Add more origins separated by commas.
     "ALLOWED_ORIGINS": "http://vicewirehub.com,https://vicewirehub.com,http://www.vicewirehub.com,https://www.vicewirehub.com",
@@ -21,5 +26,6 @@
   // Secrets (set in the Cloudflare dashboard, never in this file):
   //   TURN_KEY_ID          voice relay key id     (Realtime > TURN)
   //   TURN_KEY_API_TOKEN   voice relay key token
-  //   MOD_KEY              passphrase for the /mod page
+  //   MOD_KEY              passphrase for the /mod page (also deletes tips)
+  // Without them the tip board and LFG board still work; voice says it is off.
 }

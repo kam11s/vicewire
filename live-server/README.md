@@ -1,6 +1,21 @@
 # Vicewire live server
 
-Looking-for-group board and voice rooms for the Vicewire site. Runs on the
+Tip board, looking-for-group board and voice rooms for the Vicewire site.
+One Cloudflare Worker serves all three:
+
+- `/board/tips` tip board, stored in the D1 database `lfr-board` (tables are made on first use)
+- `/api/...` LFG board and voice rooms
+- `/mod` moderation page (needs the `MOD_KEY` secret)
+
+## Cloudflare setup
+
+Cloudflare builds from the `wrangler.jsonc` at the top of the `live-server` branch.
+Workers & Pages > Create application > Import a repository > pick `vicewire`,
+branch `live-server`, keep the name `vicewire` and the other settings > Deploy.
+Nothing else is needed for the tip board and LFG board. Voice and `/mod` need the secrets below.
+
+## About the LFG board
+ Runs on the
 Cloudflare Workers free plan (one Worker and one SQLite Durable Object).
 
 - Players post platform, chapter and what they need. Others reply live.
