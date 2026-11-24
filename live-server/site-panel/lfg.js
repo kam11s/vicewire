@@ -1,4 +1,4 @@
-/* Vicewire LFG + voice panel.
+/* CityComs (crew finder + voice) panel for Last Free Roam.
    Drop into any page:
      <div id="vw-lfg" data-api="https://YOUR-WORKER.workers.dev"></div>
      <script src="lfg.js" defer></script>
@@ -117,7 +117,7 @@
   }
 
   if (!API) {
-    root.innerHTML = '<div class="vl-empty">Looking for group is coming soon.</div>';
+    root.innerHTML = '<div class="vl-empty">CityComs is coming soon.</div>';
     return;
   }
 
@@ -132,9 +132,9 @@
   var nick = store("vw-lfg-nick") || "";
 
   root.innerHTML =
-    '<div class="vl-head"><div><h2>Looking for group</h2>' +
-    '<p class="vl-sub">Post what you need. Others reply or jump in voice. Posts vanish after 2 hours.</p></div>' +
-    '<button class="vl-primary" data-act="toggle-form">Post LFG</button></div>' +
+    '<div class="vl-head"><div><h2>CityComs</h2>' +
+    '<p class="vl-sub">Find a crew and talk in voice. Post what you need, and others reply or jump in. Posts vanish after 2 hours.</p></div>' +
+    '<button class="vl-primary" data-act="toggle-form">Post</button></div>' +
     '<form class="vl-form" novalidate><div class="vl-grid">' +
     '<div><label for="vl-plat">Platform</label><select id="vl-plat" name="platform"></select></div>' +
     '<div><label for="vl-chap">Where you are</label><select id="vl-chap" name="chapter"></select></div>' +

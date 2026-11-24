@@ -16,9 +16,9 @@ button{cursor:pointer}button.warn{border-color:var(--pink);color:var(--pink)}
 .muted{color:var(--muted);font-size:13px}#err{color:var(--pink);min-height:1.4em}
 </style></head><body>
 <h1>Last Free Roam moderation</h1>
-<p>Hide or delete tips, crew posts and replies. Three reports hide something until you look at it.</p>
+<p>Hide or delete tips, CityComs posts and replies. Three reports hide something until you look at it.</p>
 <form id="login" class="row"><input id="key" type="password" placeholder="Moderation passphrase" autocomplete="current-password"><button>Open</button></form>
-<div id="err"></div><h2>Tip board</h2><div id="tips"></div><h2>Find a crew</h2><div id="voice" class="muted"></div><div id="list"></div>
+<div id="err"></div><h2>Tip board</h2><div id="tips"></div><h2>CityComs</h2><div id="voice" class="muted"></div><div id="list"></div>
 <script>
 const $=s=>document.querySelector(s);let key=sessionStorage.getItem("vw-mod")||"";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
