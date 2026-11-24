@@ -10,8 +10,10 @@ One Cloudflare Worker serves all three:
 ## Cloudflare setup
 
 Cloudflare builds from the `wrangler.jsonc` at the top of the `live-server` branch.
-Workers & Pages > Create application > Import a repository > pick `vicewire`,
-branch `live-server`, keep the name `vicewire` and the other settings > Deploy.
+Workers & Pages > Create application > GitHub (or "Import a repository") > pick `vicewire`,
+branch `live-server`, keep the name `vicewire` and the other settings > Save and Deploy.
+Then on the Workers & Pages page, "Change" next to "Your subdomain" to a neutral name
+before the address goes on the public page.
 Nothing else is needed for the tip board and LFG board. Voice and `/mod` need the secrets below.
 
 ## About the LFG board
