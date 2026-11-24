@@ -1,0 +1,25 @@
+{
+  // Vicewire live server: LFG board + voice room signaling.
+  // Runs on the Cloudflare Workers free plan (SQLite Durable Object).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vicewire-live",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "durable_objects": {
+    "bindings": [{ "name": "HUB", "class_name": "Hub" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Hub"] }],
+  "vars": {
+    // Pages allowed to use the board. Add more origins separated by commas.
+    "ALLOWED_ORIGINS": "http://vicewirehub.com,https://vicewirehub.com,http://www.vicewirehub.com,https://www.vicewirehub.com",
+    // Most voice joins per UTC day. Keeps voice relay use inside Cloudflare's free 1,000 GB a month.
+    "VOICE_DAILY_JOINS": "500",
+    // Most people in one voice room.
+    "MAX_ROOM": "4"
+  }
+  // Secrets (set in the Cloudflare dashboard, never in this file):
+  //   TURN_KEY_ID          voice relay key id     (Realtime > TURN)
+  //   TURN_KEY_API_TOKEN   voice relay key token
+  //   MOD_KEY              passphrase for the /mod page
+}

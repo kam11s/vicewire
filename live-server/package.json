@@ -1,0 +1,15 @@
+{
+  "name": "vicewire-live",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node test/smoke.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "wrangler": "4.167.0",
+    "ws": "8.18.3"
+  }
+}
